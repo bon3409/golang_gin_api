@@ -1,0 +1,8 @@
+.vscode
+.air.toml
+.env
+docker*.env
+
+bin/
+mysql/
+tmp/

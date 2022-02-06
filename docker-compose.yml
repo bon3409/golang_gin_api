@@ -1,0 +1,36 @@
+version: '3.7'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app
+    ports:
+      - "${DOCKER_PORT}:${DOCKER_PORT}" # use .env variable
+    # 會使用 volumes 是因為 air 套件要這樣使用，才可以有 live reload 的功能
+    volumes:
+      - ./:/app
+    env_file:
+      - docker_app.env
+    depends_on:
+      - mysql
+    networks:
+      - golang
+
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    restart: unless-stopped # restart 的相關設定，https://docs.docker.com/compose/compose-file/compose-file-v3/#restart
+    tty: true # 如果為 true，表示讓 Docker 分配一個虛擬終端機(pseudo-TTY)，並且綁定到容器的標準輸出上。
+    ports: 
+      - "${MYSQL_PORT}:${MYSQL_PORT}" # use .env variable
+    volumes: 
+      - ./mysql:/var/lib/mysql
+    env_file:
+      - docker_mysql.env
+    networks:
+      - golang
+
+networks:
+  golang:
