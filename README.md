@@ -134,6 +134,33 @@
 	running.
     ```
 
+    ##### ❗️ Mac 無法使用 `air` 指令時，請使用以下方法
+
+    1. 開啟 `~/.zshrc`
+
+        ```bash
+        $ vim ~/.zshrc
+        ```
+
+    2. 新增指令
+
+        ```bash
+        # ~/.zshrc
+        alias air="$GOPATH/bin/air"
+        ```
+        
+    3. 重新讀取檔案
+
+        ```bash
+        $ source ~/.zshrc
+        ```
+
+    4. 在 terminal 執行
+
+        ```bash
+        $ air
+        ```
+
 - ### Docker
 
     ```bash
