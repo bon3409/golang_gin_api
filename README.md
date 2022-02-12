@@ -218,6 +218,51 @@
 
 ---
 
+## Seeder
+
+### 執行指令
+- 第一種方式：
+    ```bash
+    # make seed <model name>
+    # 無法指定 seeder 產生的數量，會依照預設值
+    $ make seed user
+    ```
+- 第二種方式：
+    ```bash
+    # go run db/seed/seeder.go -model=<model name> -count=<seed count>
+    # 可以指定 seeder 產生的數量
+    $ go run db/seed/seeder.go -model=user -count=20
+    ```
+
+### 建立 seeder 的方式
+
+1. 在 model 建立 `Seed()` 的 function
+
+    ```go
+    // example: models/user.go
+    func (user *User) Seed() {
+        err := faker.FakeData(&user)
+        if err != nil {
+            fmt.Println(err)
+        }
+        config.DB.Create(&user)
+    }
+    ```
+
+2. 在 `db/seed/seeder.go` 新增 Case
+
+    ```go
+    switch name {
+	case "user":
+		user := new(models.User)
+		runSeeder(user, *count)
+	case "company":
+		company := new(models.Company)
+		runSeeder(company, *count)
+	}
+    ```
+
+---
 ## API Sample
 
 - ### Create user

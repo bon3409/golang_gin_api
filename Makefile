@@ -26,11 +26,22 @@ migrate-create:
 	migrate create -ext sql -dir ./db/migrate -seq $(filter-out $@,$(MAKECMDGOALS))
 
 # 執行 migrate up
+# make migrate-up <option: migrate version>
+# make migrate-up 1
 .PHONY: migrate-up
 migrate-up:
-	migrate -verbose -path db/migrate -database "mysql://${DATABASE_USER}:${DATABASE_PASSWORD}@tcp(${DATABASE_HOST}:${DATABASE_PORT})/${DATABASE_NAME}" up
+	migrate -verbose -path db/migrate -database "mysql://${DATABASE_USER}:${DATABASE_PASSWORD}@tcp(${DATABASE_HOST}:${DATABASE_PORT})/${DATABASE_NAME}" up $(filter-out $@,$(MAKECMDGOALS))
 
 # 執行 migrate down
+# make migrate-down <option: migrate version>
+# make migrate-down 1
 .PHONY: migrate-down
 migrate-down:
-	migrate -verbose -path db/migrate -database "mysql://${DATABASE_USER}:${DATABASE_PASSWORD}@tcp(${DATABASE_HOST}:${DATABASE_PORT})/${DATABASE_NAME}" down
+	migrate -verbose -path db/migrate -database "mysql://${DATABASE_USER}:${DATABASE_PASSWORD}@tcp(${DATABASE_HOST}:${DATABASE_PORT})/${DATABASE_NAME}" down $(filter-out $@,$(MAKECMDGOALS))
+
+# 執行 seed
+# make seed <model name>
+# 預設是新增 10 個假資料
+.PHONY: seed
+seed:
+	@go run db/seed/seeder.go -model=$(filter-out $@,$(MAKECMDGOALS))
