@@ -34,6 +34,8 @@ func main() {
 	case "company":
 		company := new(models.Company)
 		runSeeder(company, *count)
+	default:
+		fmt.Printf("找不到 %s seeder 設定 \n", name)
 	}
 }
 
